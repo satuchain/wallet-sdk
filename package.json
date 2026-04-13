@@ -56,11 +56,11 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/satuchainwallet/sdk"
+    "url": "https://github.com/satuchain/wallet-sdk"
   },
-  "homepage": "https://github.com/satuchainwallet/sdk#readme",
+  "homepage": "https://github.com/satuchain/wallet-sdk#readme",
   "bugs": {
-    "url": "https://github.com/satuchainwallet/sdk/issues"
+    "url": "https://github.com/satuchain/wallet-sdk/issues"
   },
   "devDependencies": {
     "tsup": "^8.0.0",

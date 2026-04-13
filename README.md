@@ -2,7 +2,7 @@
   <img src="logo.png" width="80" alt="SatuChain Wallet" />
 </p>
 
-<h1 align="center">@satuchainwallet/sdk</h1>
+<h1 align="center">@satuchain/wallet-sdk</h1>
 
 <p align="center">
   Multi-chain wallet SDK for <strong>EVM</strong>, <strong>Solana</strong> &amp; <strong>TON</strong> DApps.<br/>
@@ -10,7 +10,7 @@
 </p>
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/@satuchainwallet/sdk"><img src="https://img.shields.io/npm/v/@satuchainwallet/sdk?color=0B3DFF&label=npm" alt="npm" /></a>
+  <a href="https://www.npmjs.com/package/@satuchain/wallet-sdk"><img src="https://img.shields.io/npm/v/@satuchain/wallet-sdk?color=0B3DFF&label=npm" alt="npm" /></a>
   <a href="https://github.com/satuchainwallet/wallet-sdk/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="license" /></a>
   <img src="https://img.shields.io/badge/chains-EVM%20%7C%20Solana%20%7C%20TON-blueviolet" alt="chains" />
 </p>
@@ -18,7 +18,7 @@
 ## Install
 
 ```bash
-npm install @satuchainwallet/sdk
+npm install @satuchain/wallet-sdk
 ```
 
 ## Quick Start
@@ -26,7 +26,7 @@ npm install @satuchainwallet/sdk
 ### EVM (Ethereum, BNB Chain, Satuchain)
 
 ```typescript
-import { SatuChainEVM } from "@satuchainwallet/sdk/evm";
+import { SatuChainEVM } from "@satuchain/wallet-sdk/evm";
 
 const provider = new SatuChainEVM({ appName: "My DEX" });
 
@@ -51,7 +51,7 @@ provider.on("chainChanged", (chainId) => console.log(chainId));
 ### Solana
 
 ```typescript
-import { SatuChainSolana } from "@satuchainwallet/sdk/solana";
+import { SatuChainSolana } from "@satuchain/wallet-sdk/solana";
 
 const provider = new SatuChainSolana({ appName: "My DEX" });
 
@@ -69,7 +69,7 @@ const { signature: txSig } = await provider.signAndSendTransaction(base64Tx);
 ### TON
 
 ```typescript
-import { SatuChainTON } from "@satuchainwallet/sdk/ton";
+import { SatuChainTON } from "@satuchain/wallet-sdk/ton";
 
 const provider = new SatuChainTON({ appName: "My DEX" });
 
@@ -87,7 +87,7 @@ const { hash } = await provider.sendTransaction({
 ### All chains at once
 
 ```typescript
-import { SatuChainEVM, SatuChainSolana, SatuChainTON } from "@satuchainwallet/sdk";
+import { SatuChainEVM, SatuChainSolana, SatuChainTON } from "@satuchain/wallet-sdk";
 
 const evm = new SatuChainEVM();
 const sol = new SatuChainSolana();
@@ -97,7 +97,7 @@ const ton = new SatuChainTON();
 ## Detection
 
 ```typescript
-import { isSatuChainInstalled, waitForSatuChain, EXTENSION_URL } from "@satuchainwallet/sdk";
+import { isSatuChainInstalled, waitForSatuChain, EXTENSION_URL } from "@satuchain/wallet-sdk";
 
 if (!isSatuChainInstalled()) {
   // Show install prompt
@@ -120,7 +120,7 @@ The EVM provider implements the [EIP-1193](https://eips.ethereum.org/EIPS/eip-11
 
 ```typescript
 import { ethers } from "ethers";
-import { SatuChainEVM } from "@satuchainwallet/sdk/evm";
+import { SatuChainEVM } from "@satuchain/wallet-sdk/evm";
 
 const satuProvider = new SatuChainEVM();
 await satuProvider.connect();

@@ -1,13 +1,13 @@
-// ── @satuchainwallet/sdk ──
+// ── @satuchain/wallet-sdk ──
 // Multi-chain wallet SDK for EVM, Solana & TON DApps
 //
 // Usage:
-//   import { SatuChainEVM, SatuChainSolana, SatuChainTON } from "@satuchainwallet/sdk";
+//   import { SatuChainEVM, SatuChainSolana, SatuChainTON } from "@satuchain/wallet-sdk";
 //
 // Or import per chain:
-//   import { SatuChainEVM } from "@satuchainwallet/sdk/evm";
-//   import { SatuChainSolana } from "@satuchainwallet/sdk/solana";
-//   import { SatuChainTON } from "@satuchainwallet/sdk/ton";
+//   import { SatuChainEVM } from "@satuchain/wallet-sdk/evm";
+//   import { SatuChainSolana } from "@satuchain/wallet-sdk/solana";
+//   import { SatuChainTON } from "@satuchain/wallet-sdk/ton";
 
 // ── Providers ──
 export { SatuChainEVM } from "./evm";

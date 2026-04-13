@@ -1,0 +1,69 @@
+{
+  "name": "@satuchainwallet/sdk",
+  "version": "1.0.0",
+  "description": "SatuChain Wallet SDK — Multi-chain provider for EVM, Solana & TON DApps",
+  "main": "dist/index.js",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    },
+    "./evm": {
+      "types": "./dist/evm.d.ts",
+      "import": "./dist/evm.mjs",
+      "require": "./dist/evm.js"
+    },
+    "./solana": {
+      "types": "./dist/solana.d.ts",
+      "import": "./dist/solana.mjs",
+      "require": "./dist/solana.js"
+    },
+    "./ton": {
+      "types": "./dist/ton.d.ts",
+      "import": "./dist/ton.mjs",
+      "require": "./dist/ton.js"
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "lint": "tsc --noEmit",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "satuchain",
+    "wallet",
+    "web3",
+    "evm",
+    "solana",
+    "ton",
+    "provider",
+    "dapp",
+    "sdk",
+    "ethereum",
+    "bnb",
+    "defi"
+  ],
+  "author": "SatuChain <dev@satuchain.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/satuchainwallet/sdk"
+  },
+  "homepage": "https://github.com/satuchainwallet/sdk#readme",
+  "bugs": {
+    "url": "https://github.com/satuchainwallet/sdk/issues"
+  },
+  "devDependencies": {
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0"
+  }
+}

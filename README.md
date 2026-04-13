@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="logo.png" width="80" alt="SatuChain Wallet" />
+  <img src="https://raw.githubusercontent.com/satuchain/wallet-sdk/main/logo.png" width="80" alt="SatuChain Wallet" />
 </p>
 
 <h1 align="center">@satuchain/wallet-sdk</h1>
@@ -11,14 +11,33 @@
 
 <p align="center">
   <a href="https://www.npmjs.com/package/@satuchain/wallet-sdk"><img src="https://img.shields.io/npm/v/@satuchain/wallet-sdk?color=0B3DFF&label=npm" alt="npm" /></a>
-  <a href="https://github.com/satuchainwallet/wallet-sdk/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="license" /></a>
+  <a href="https://github.com/satuchain/wallet-sdk/blob/main/LICENSE"><img src="https://img.shields.io/badge/license-MIT-green" alt="license" /></a>
   <img src="https://img.shields.io/badge/chains-EVM%20%7C%20Solana%20%7C%20TON-blueviolet" alt="chains" />
 </p>
+
+---
+
+## Prerequisites
+
+> **Users need SatuChain Wallet installed to use this SDK.**
+>
+> - **Mobile App (Android/iOS):** [https://wallet.satuchain.com](https://wallet.satuchain.com)
+> - **Browser Extension (Chrome):** Paired via mobile app
+>
+> The mobile app manages private keys securely. The browser extension connects via encrypted QR pairing. DApp developers integrate this SDK — end users install the wallet.
+
+---
 
 ## Install
 
 ```bash
 npm install @satuchain/wallet-sdk
+```
+
+```bash
+# or
+yarn add @satuchain/wallet-sdk
+pnpm add @satuchain/wallet-sdk
 ```
 
 ## Quick Start
@@ -30,18 +49,21 @@ import { SatuChainEVM } from "@satuchain/wallet-sdk/evm";
 
 const provider = new SatuChainEVM({ appName: "My DEX" });
 
-// Connect
+// Connect — opens wallet approval popup
 const accounts = await provider.connect();
 console.log("Connected:", accounts[0]);
 
-// Send transaction
+// Send transaction — opens tx approval popup
 const txHash = await provider.sendTransaction({
   to: "0x...",
   value: "0x38D7EA4C68000", // 0.001 ETH in wei (hex)
 });
 
-// Sign message
+// Sign message — opens sign approval popup
 const signature = await provider.signMessage("Hello SatuChain!");
+
+// Sign typed data (EIP-712)
+const sig = await provider.signTypedData(typedData);
 
 // Listen for events
 provider.on("accountsChanged", (accounts) => console.log(accounts));
@@ -82,6 +104,9 @@ const { hash } = await provider.sendTransaction({
   to: "EQ...",
   value: "1000000000", // 1 TON in nanoTON
 });
+
+// Sign proof (TON Connect)
+const proof = await provider.signProof({ domain: "myapp.com", timestamp: Date.now(), payload: "..." });
 ```
 
 ### All chains at once
@@ -100,8 +125,8 @@ const ton = new SatuChainTON();
 import { isSatuChainInstalled, waitForSatuChain, EXTENSION_URL } from "@satuchain/wallet-sdk";
 
 if (!isSatuChainInstalled()) {
-  // Show install prompt
-  window.open(EXTENSION_URL);
+  // Show install prompt — redirect to wallet download
+  window.open("https://wallet.satuchain.com");
 } else {
   // Connect
 }
@@ -129,6 +154,31 @@ const provider = new ethers.BrowserProvider(satuProvider);
 const signer = await provider.getSigner();
 const balance = await provider.getBalance(signer.address);
 ```
+
+## Transaction Approval
+
+All sensitive operations require user approval via the extension popup:
+
+| Action | Popup Type | Color |
+|--------|-----------|-------|
+| `eth_requestAccounts` | Connection Request | Blue |
+| `sol_requestAccounts` | Connection Request (Solana) | Purple |
+| `ton_requestAccounts` | Connection Request (TON) | Cyan |
+| `eth_sendTransaction` | Transaction Approval | Orange |
+| `personal_sign` | Signature Request | Blue |
+| `eth_signTypedData_v4` | Signature Request | Blue |
+
+Contract interactions are auto-detected:
+
+| Method | Detected As |
+|--------|------------|
+| `0xa9059cbb` | Transfer |
+| `0x095ea7b3` | Approve |
+| `0x38ed1739` | Swap Exact Tokens |
+| `0x7ff36ab5` | Swap Exact ETH |
+| `0xe8e33700` | Add Liquidity |
+| `0xa694fc3a` | Stake |
+| `0x1249c58b` | Mint |
 
 ## Supported Chains
 
@@ -179,6 +229,12 @@ const balance = await provider.getBalance(signer.address);
 | `signProof(params)` | `{ signature, timestamp }` | TON Connect proof |
 | `disconnect()` | `void` | Disconnect |
 
+## Links
+
+- **Wallet Download:** [https://wallet.satuchain.com](https://wallet.satuchain.com)
+- **npm:** [https://www.npmjs.com/package/@satuchain/wallet-sdk](https://www.npmjs.com/package/@satuchain/wallet-sdk)
+- **GitHub:** [https://github.com/satuchain/wallet-sdk](https://github.com/satuchain/wallet-sdk)
+
 ## License
 
-MIT
+MIT — [SatuChain](https://satuchain.com)

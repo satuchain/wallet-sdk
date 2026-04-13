@@ -25,4 +25,4 @@ export type { SolanaConnectResult, SolanaSignResult } from "./solana";
 export type { TonConnectResult } from "./ton";
 
 // ── Version ──
-export const VERSION = "1.0.0";
+export const VERSION = "1.0.1";

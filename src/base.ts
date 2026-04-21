@@ -41,18 +41,42 @@ export class BaseProvider {
     });
   }
 
-  /** Send message to extension via window.postMessage */
-  protected sendMessage(method: string, params?: any): Promise<any> {
+  /**
+   * Send a request to the SatuChain extension via `window.postMessage`.
+   *
+   * The extension's `content.js` (ISOLATED world) relays requests to the
+   * background service worker and posts the response back with
+   * `target: "satuchain-inpage"`. We accept both `satuchain-inpage` (current
+   * extension) and `satuchain-sdk` (legacy pre-1.0.2 builds) for forward
+   * compatibility, and we validate `event.source === window` to reject
+   * postMessages injected from iframes.
+   *
+   * Request IDs use `crypto.randomUUID()` so other same-origin scripts
+   * can't spoof responses with guessable identifiers.
+   */
+  protected sendMessage(method: string, params?: any, timeoutMs = 125_000): Promise<any> {
     return new Promise((resolve, reject) => {
-      const id = `satu_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
+      const id = _genId();
 
       const handler = (event: MessageEvent) => {
-        if (event.data?.target !== "satuchain-sdk" || event.data?.id !== id) return;
+        if (event.source !== window) return;
+        const data: any = event.data;
+        if (!data) return;
+        const target = data.target;
+        if (target !== "satuchain-inpage" && target !== "satuchain-sdk") return;
+        if (data.id !== id) return;
+
         window.removeEventListener("message", handler);
-        if (event.data.error) {
-          reject(new Error(event.data.error));
+        clearTimeout(timer);
+
+        // Support both payload shapes:
+        //   {id, response: {result, error}}  ← extension content.js relays this
+        //   {id, result, error}               ← legacy SDK shape
+        const resp = data.response ?? data;
+        if (resp?.error) {
+          reject(new Error(typeof resp.error === "string" ? resp.error : "Request failed"));
         } else {
-          resolve(event.data.result);
+          resolve(resp?.result);
         }
       };
 
@@ -62,14 +86,27 @@ export class BaseProvider {
         target: "satuchain-content",
         id,
         method,
-        params,
+        params: params ?? [],
       }, window.location.origin);
 
-      // Timeout after 60s
-      setTimeout(() => {
+      const timer = setTimeout(() => {
         window.removeEventListener("message", handler);
         reject(new Error("Request timed out"));
-      }, 60000);
+      }, timeoutMs);
     });
   }
+}
+
+/**
+ * Generate an unguessable request ID. Other scripts running in the same page
+ * (ads, third-party SDKs, etc.) can see postMessages, so a predictable counter
+ * would let them spoof responses. UUIDs (128-bit random) prevent that.
+ */
+function _genId(): string {
+  if (typeof crypto !== "undefined" && typeof crypto.randomUUID === "function") {
+    return `satu-${crypto.randomUUID()}`;
+  }
+  const bytes = new Uint8Array(16);
+  (typeof crypto !== "undefined" ? crypto : (window as any).crypto).getRandomValues(bytes);
+  return `satu-${Array.from(bytes, b => b.toString(16).padStart(2, "0")).join("")}`;
 }

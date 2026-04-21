@@ -15,7 +15,16 @@ export { SatuChainSolana } from "./solana";
 export { SatuChainTON } from "./ton";
 
 // ── Detection ──
-export { isSatuChainInstalled, waitForSatuChain, getSatuChainProvider, EXTENSION_URL, WEBSITE_URL } from "./detect";
+export {
+  isSatuChainInstalled,
+  waitForSatuChain,
+  getSatuChainProvider,
+  getExtensionVersion,
+  isExtensionOutdated,
+  MIN_EXTENSION_VERSION,
+  EXTENSION_URL,
+  WEBSITE_URL,
+} from "./detect";
 
 // ── Types ──
 export type { SatuChainSDKConfig, ConnectResult, SendTransactionParams, SignMessageParams, EventType, EventCallback } from "./types";
@@ -25,4 +34,4 @@ export type { SolanaConnectResult, SolanaSignResult } from "./solana";
 export type { TonConnectResult } from "./ton";
 
 // ── Version ──
-export const VERSION = "1.0.1";
+export const VERSION = "1.0.2";

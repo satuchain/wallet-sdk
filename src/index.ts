@@ -19,9 +19,14 @@ export {
   isSatuChainInstalled,
   waitForSatuChain,
   getSatuChainProvider,
+  getSatuChainSolanaProvider,
+  getSatuChainTonProvider,
   getExtensionVersion,
   isExtensionOutdated,
+  isExtensionBelowRecommended,
   MIN_EXTENSION_VERSION,
+  RECOMMENDED_EXTENSION_VERSION,
+  SATUCHAIN_RDNS,
   EXTENSION_URL,
   WEBSITE_URL,
 } from "./detect";
@@ -34,4 +39,4 @@ export type { SolanaConnectResult, SolanaSignResult } from "./solana";
 export type { TonConnectResult } from "./ton";
 
 // ── Version ──
-export const VERSION = "1.0.2";
+export const VERSION = "1.0.3";

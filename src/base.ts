@@ -1,6 +1,6 @@
 // ── Base provider with event emitter ──
 
-import { EventType, EventCallback } from "./types";
+import { EventType, EventCallback, SatuChainError } from "./types";
 
 export class BaseProvider {
   protected _listeners: Map<EventType, Set<EventCallback>> = new Map();
@@ -74,7 +74,17 @@ export class BaseProvider {
         //   {id, result, error}               ← legacy SDK shape
         const resp = data.response ?? data;
         if (resp?.error) {
-          reject(new Error(typeof resp.error === "string" ? resp.error : "Request failed"));
+          // Preserve the EIP-1193 numeric code (4001 user rejected, 4100
+          // unauthorized, 4900 disconnected, etc.) so dApps can branch on
+          // `error.code` rather than string-matching the message. Extension
+          // ≥1.0.4 sets this; older builds omit it and we fall back to a
+          // bare Error for backward compat.
+          const message = typeof resp.error === "string" ? resp.error : "Request failed";
+          if (typeof resp.code === "number") {
+            reject(new SatuChainError(resp.code, message));
+          } else {
+            reject(new Error(message));
+          }
         } else {
           resolve(resp?.result);
         }

@@ -38,5 +38,20 @@ export type { EIP1193RequestArgs } from "./evm";
 export type { SolanaConnectResult, SolanaSignResult } from "./solana";
 export type { TonConnectResult } from "./ton";
 
+// ── Chain registry — canonical source of truth for chainId / hex / RPC ──
+// Import these instead of hand-writing chain configs. dApps that hardcode
+// hex chainIds risk arithmetic typos that silently break switchChain
+// (we hit this twice in 2026-04 — see SDK 1.0.5 changelog).
+export type { SatuChain } from "./chains";
+export {
+  SATU_CHAINS,
+  bscMainnet,
+  ethMainnet,
+  satuMainnet,
+  satuTestnet,
+  getChainById,
+  getChainByHex,
+} from "./chains";
+
 // ── Version ──
-export const VERSION = "1.0.3";
+export const VERSION = "1.0.5";
